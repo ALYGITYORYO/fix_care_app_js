@@ -1,0 +1,82 @@
+<!-- ========== INDEX.HTML ========== -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- INCLUDE HEAD -->
+    <div id="head"></div>
+</head>
+<body>
+    <!-- Page wrapper start -->
+    <div class="page-wrapper">
+        
+        <!-- INCLUDE HEADER -->
+        <div id="header"></div>
+
+        <!-- Main container start -->
+        <div class="main-container">
+            
+            <!-- INCLUDE SIDEBAR -->
+            <div id="sidebar"></div>
+
+            <!-- App container starts -->
+            <div class="app-container">
+                
+                <!-- INCLUDE BREADCRUMB -->
+                <div id="breadcrumb"></div>
+
+                <!-- App body starts -->
+                <div class="app-body">
+                    <!-- CONTENIDO ESPECÍFICO DE ESTA PÁGINA -->
+                    <div class="row gx-3">
+                        <div class="col-12">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h5 class="card-title">Dashboard</h5>
+                                </div>
+                                <div class="card-body">
+                                    <h1>¡Bienvenido al Dashboard!</h1>
+                                    <p class="text-success">✅ Sistema conectado y funcionando correctamente</p>
+                                    
+                                    <!-- Contenido del dashboard -->
+                                    <div class="row mt-4">
+                                        <div class="col-md-4">
+                                            <div class="card bg-primary text-white">
+                                                <div class="card-body">
+                                                    <h5>Usuarios</h5>
+                                                    <h2 id="total-usuarios">0</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- App body ends -->
+
+                <!-- INCLUDE FOOTER -->
+                <div id="footer"></div>
+
+            </div>
+            <!-- App container ends -->
+        </div>
+        <!-- Main container end -->
+    </div>
+    <!-- Page wrapper end -->
+
+    <!-- INCLUDE SCRIPTS -->
+    <div id="scripts"></div>
+
+    <!-- Script específico de esta página -->
+    <script>
+        // Cargar datos específicos del dashboard
+        fetch('/api/stats')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('total-usuarios').textContent = data.usuarios || 0;
+            });
+    </script>
+</body>
+<script src="assets/js/app.js"></script>
+</html>
