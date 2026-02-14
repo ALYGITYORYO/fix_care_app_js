@@ -1,12 +1,18 @@
-const mysql = require('mysql2');
-
-// Crear la conexión
-const conexion = mysql.createConnection({
+const mysql = require('mysql2'); // Importar mysql2 para conexión a MySQL
+//conexión a la base de datos MySQL
+const connection = mysql.createConnection({
     host: 'localhost',
-    user: 'root',      
-    password: '',      
-    database: 'fix_care', 
-    port: 3306
+    user: 'root',
+    password: '',
+    database: 'fixcare'
+});
+//comprobar la conexión a MySQL
+connection.connect((err) => {
+    if (err) {
+        console.error('Error MySQL:', err);
+        return;
+    }
+    console.log('Conectado a MySQL');
 });
 
-module.exports = conexion;
+module.exports = connection;
