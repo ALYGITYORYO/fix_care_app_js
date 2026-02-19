@@ -23,9 +23,6 @@ router.put('/api/usuarios/:id', usuarioController.updateUsuario);
 // Eliminar usuario (DELETE)
 router.delete('/api/usuarios/:id', usuarioController.deleteUsuario);
 
-// Servir fotos de usuarios
-router.get('/api/fotos/:filename', usuarioController.servePhoto);
-
 // Ruta para el dashboard (la usaremos después)
 router.get('/dashboard', mainController.getDashboard);
 

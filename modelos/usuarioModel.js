@@ -6,7 +6,7 @@ const UsuarioModel = {
     // Obtener todos los usuarios
     getAll: (callback) => {
         const query = `
-            SELECT id, nombre, apepat, apemat, user, correo, cel, rol, img, menu,
+            SELECT id, nombre, apepat, user, correo, rol, menu,
                    DATE_FORMAT(usuario_creado, '%Y-%m-%d %H:%i:%s') as usuario_creado,
                    DATE_FORMAT(usuario_actualizado, '%Y-%m-%d %H:%i:%s') as usuario_actualizado
             FROM usuario
@@ -29,20 +29,17 @@ const UsuarioModel = {
         
         const query = `
             INSERT INTO usuario 
-            (nombre, apepat, apemat, user, correo, clave, cel, rol, img, menu)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            (nombre, apepat, user, correo, clave, rol, menu)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         `;
         
         const values = [
             usuario.nombre,
             usuario.apepat,
-            usuario.apemat,
             usuario.user,
             usuario.correo,
             hash,
-            usuario.cel || null,
             usuario.rol,
-            usuario.img || null,
             usuario.menu || null
         ];
         
@@ -53,15 +50,13 @@ const UsuarioModel = {
     update: (id, usuario, callback) => {
         let query = `
             UPDATE usuario 
-            SET nombre = ?, apepat = ?, apemat = ?, correo = ?, 
-                cel = ?, rol = ?
+            SET nombre = ?, apepat = ?, correo = ?, 
+                rol = ?
         `;
         let values = [
             usuario.nombre,
             usuario.apepat,
-            usuario.apemat,
             usuario.correo,
-            usuario.cel || null,
             usuario.rol
         ];
 
@@ -71,12 +66,6 @@ const UsuarioModel = {
             const hash = bcrypt.hashSync(usuario.clave, salt);
             query += ', clave = ?';
             values.push(hash);
-        }
-
-        // Si hay nueva imagen
-        if (usuario.img) {
-            query += ', img = ?';
-            values.push(usuario.img);
         }
 
         // Si hay menús
