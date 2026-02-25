@@ -136,10 +136,10 @@
                                                 <div class="col-md-4">
                                                     <select class="form-select" id="filtroEstado" onchange="filtrarPorEstado(this.value)">
                                                         <option value="todos">Todos los estados</option>
-                                                        <option value="abierto">Abierto</option>
-                                                        <option value="proceso">En Proceso</option>
-                                                        <option value="pendiente">Pendiente</option>
-                                                        <option value="completo">Completado</option>
+                                                        <option value="Abierto">Abierto</option>
+                                                        <option value="En Proceso">En Proceso</option>
+                                                        <option value="Pendiente">Pendiente</option>
+                                                        <option value="Completo">Completado</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -179,7 +179,12 @@
     <!-- INCLUDE SCRIPTS -->
     <div id="scripts"></div>
 
+    <!-- Script para cargar includes (head, header, sidebar, etc) -->
+    <script src="assets/js/app.js"></script>
+
     <!-- Script específico de esta página -->
+    <script src="assets/js/alta-ticket.js"></script>
+    
     <script>
         async function cargarEstadisticas() {
             try {
@@ -198,5 +203,4 @@
         setInterval(cargarEstadisticas, 30000);
     </script>
 </body>
-<script src="assets/js/app.js"></script>
 </html>

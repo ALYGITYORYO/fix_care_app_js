@@ -6,10 +6,10 @@ const UsuarioModel = {
     // Obtener todos los usuarios
     getAll: (callback) => {
         const query = `
-            SELECT id, nombre, apepat, apemat, user, correo, cel, rol, img, menu,
+            SELECT id, nombre, apepat, user, correo, rol, menu,
                    DATE_FORMAT(usuario_creado, '%Y-%m-%d %H:%i:%s') as usuario_creado,
                    DATE_FORMAT(usuario_actualizado, '%Y-%m-%d %H:%i:%s') as usuario_actualizado
-            FROM usuarios
+            FROM usuario
             ORDER BY id DESC
         `;
         conexion.query(query, callback);
@@ -17,7 +17,7 @@ const UsuarioModel = {
 
     // Obtener usuario por ID
     getById: (id, callback) => {
-        const query = 'SELECT * FROM usuarios WHERE id = ?';
+        const query = 'SELECT * FROM usuario WHERE id = ?';
         conexion.query(query, [id], callback);
     },
 
@@ -28,21 +28,18 @@ const UsuarioModel = {
         const hash = bcrypt.hashSync(usuario.clave, salt);
         
         const query = `
-            INSERT INTO usuarios 
-            (nombre, apepat, apemat, user, correo, clave, cel, rol, img, menu)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO usuario 
+            (nombre, apepat, user, correo, clave, rol, menu)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         `;
         
         const values = [
             usuario.nombre,
             usuario.apepat,
-            usuario.apemat,
             usuario.user,
             usuario.correo,
             hash,
-            usuario.cel || null,
             usuario.rol,
-            usuario.img || null,
             usuario.menu || null
         ];
         
@@ -52,16 +49,14 @@ const UsuarioModel = {
     // Actualizar usuario
     update: (id, usuario, callback) => {
         let query = `
-            UPDATE usuarios 
-            SET nombre = ?, apepat = ?, apemat = ?, correo = ?, 
-                cel = ?, rol = ?
+            UPDATE usuario 
+            SET nombre = ?, apepat = ?, correo = ?, 
+                rol = ?
         `;
         let values = [
             usuario.nombre,
             usuario.apepat,
-            usuario.apemat,
             usuario.correo,
-            usuario.cel || null,
             usuario.rol
         ];
 
@@ -71,12 +66,6 @@ const UsuarioModel = {
             const hash = bcrypt.hashSync(usuario.clave, salt);
             query += ', clave = ?';
             values.push(hash);
-        }
-
-        // Si hay nueva imagen
-        if (usuario.img) {
-            query += ', img = ?';
-            values.push(usuario.img);
         }
 
         // Si hay menús
@@ -93,13 +82,13 @@ const UsuarioModel = {
 
     // Eliminar usuario
     delete: (id, callback) => {
-        const query = 'DELETE FROM usuarios WHERE id = ?';
+        const query = 'DELETE FROM usuario WHERE id = ?';
         conexion.query(query, [id], callback);
     },
 
     // Verificar usuario (login)
     verifyUser: (user, callback) => {
-        const query = 'SELECT * FROM usuarios WHERE user = ? OR correo = ?';
+        const query = 'SELECT * FROM usuario WHERE user = ? OR correo = ?';
         conexion.query(query, [user, user], callback);
     }
 };
