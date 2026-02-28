@@ -25,22 +25,26 @@ const UsuarioModel = {
     create: (usuario, callback) => {
         // Encriptar contraseña
         const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(usuario.clave, salt);
+        const hash = bcrypt.hashSync(usuario.password, salt);
         
         const query = `
             INSERT INTO usuario 
-            (nombre, apepat, user, correo, clave, rol, menu)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            (nombre, apepat, apemat, correo, cel, user, password, rol, menu, img, usuario_creado, usuario_actualizado, id_organizacion)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), ?)
         `;
         
         const values = [
             usuario.nombre,
             usuario.apepat,
-            usuario.user,
+            usuario.apemat || null,
             usuario.correo,
+            usuario.cel || null,
+            usuario.user,
             hash,
             usuario.rol,
-            usuario.menu || null
+            usuario.menu || null,
+            usuario.img || null,
+            usuario.id_organizacion || null
         ];
         
         conexion.query(query, values, callback);
@@ -50,21 +54,23 @@ const UsuarioModel = {
     update: (id, usuario, callback) => {
         let query = `
             UPDATE usuario 
-            SET nombre = ?, apepat = ?, correo = ?, 
-                rol = ?
+            SET nombre = ?, apepat = ?, apemat = ?, correo = ?, cel = ?, rol = ?, id_organizacion = ?
         `;
         let values = [
             usuario.nombre,
             usuario.apepat,
+            usuario.apemat || null,
             usuario.correo,
-            usuario.rol
+            usuario.cel || null,
+            usuario.rol,
+            usuario.id_organizacion || null
         ];
 
         // Si hay nueva contraseña
-        if (usuario.clave) {
+        if (usuario.password) {
             const salt = bcrypt.genSaltSync(10);
-            const hash = bcrypt.hashSync(usuario.clave, salt);
-            query += ', clave = ?';
+            const hash = bcrypt.hashSync(usuario.password, salt);
+            query += ', password = ?';
             values.push(hash);
         }
 
@@ -72,6 +78,11 @@ const UsuarioModel = {
         if (usuario.menu) {
             query += ', menu = ?';
             values.push(usuario.menu);
+        }
+        // Si hay imagen
+        if (usuario.img) {
+            query += ', img = ?';
+            values.push(usuario.img);
         }
 
         query += ' WHERE id = ?';

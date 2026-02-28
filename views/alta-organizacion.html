@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/kendo_v2.js"></script>
+    <!-- INCLUDE HEAD -->
+    <div id="head"></div>
+</head>
+<body>
+    <div class="page-wrapper">
+        <div id="header"></div>
+        <div class="main-container">
+            <div id="sidebar"></div>
+            <div class="app-container">
+                <div id="breadcrumb"></div>
+                <div class="app-body">
+                    <div class="row gx-3">
+                        <div class="col-12">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h5 class="card-title"><i class="fas fa-building me-2"></i>Organizaciones</h5>
+                                </div>
+                                <div class="card-body">
+                                    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modalAltaOrg">
+                                        <i class="fas fa-plus"></i> Nueva organización
+                                    </button>
+                                    <div id="gridOrg"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal alta organizacion -->
+    <div class="modal fade" id="modalAltaOrg" tabindex="-1" aria-labelledby="modalAltaOrgLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="modalAltaOrgLabel">Alta de Organización</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formOrg">
+                        <div class="mb-3">
+                            <label for="orgNombre" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="orgNombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="orgTipo" class="form-label">Tipo</label>
+                            <select id="orgTipo" class="form-select" required>
+                                <option value="">Seleccionar tipo</option>
+                                <option value="corporacion">Corporación</option>
+                                <option value="sociedad">Sociedad</option>
+                                <option value="individual">Individual</option>
+                                <option value="gubernamental">Gubernamental</option>
+                                <option value="sin_fines_lucro">Sin fines de lucro</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="orgLogo" class="form-label">Logo (ruta)</label>
+                            <input type="text" class="form-control" id="orgLogo">
+                        </div>
+                        <button type="submit" class="btn btn-success">Crear organización</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/alta-organizacion.js"></script>
+    <div id="scripts"></div>
+</body>
+</html>

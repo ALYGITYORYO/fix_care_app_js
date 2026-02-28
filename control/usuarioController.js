@@ -30,11 +30,15 @@ const usuarioController = {
         const usuario = {
             nombre: req.body.usuario_nombre,
             apepat: req.body.apepat,
-            user: req.body.usuario_usuario,
+            apemat: req.body.usuario_apemat,
             correo: req.body.usuario_email,
-            clave: req.body.usuario_clave_1,
+            cel: req.body.usuario_cel,
+            user: req.body.usuario_usuario,
+            password: req.body.usuario_clave_1,
             rol: req.body.usuario_rol,
-            menu: req.body.usuario_menu
+            menu: req.body.usuario_menu,
+            img: req.body.usuario_foto, // expects URL or filename
+            id_organizacion: req.body.usuario_organizacion
         };
 
         UsuarioModel.create(usuario, (err, result) => {
@@ -61,14 +65,18 @@ const usuarioController = {
         const usuario = {
             nombre: req.body.usuario_nombre,
             apepat: req.body.apepat,
+            apemat: req.body.usuario_apemat,
             correo: req.body.usuario_email,
+            cel: req.body.usuario_cel,
             rol: req.body.usuario_rol,
-            menu: req.body.usuario_menu
+            menu: req.body.usuario_menu,
+            img: req.body.usuario_foto,
+            id_organizacion: req.body.usuario_organizacion
         };
 
         // Si hay nueva contraseña
         if (req.body.usuario_clave_1) {
-            usuario.clave = req.body.usuario_clave_1;
+            usuario.password = req.body.usuario_clave_1;
         }
 
         UsuarioModel.update(id, usuario, (err, result) => {

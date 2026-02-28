@@ -52,16 +52,15 @@ const ticketController = {
     // Crear un nuevo ticket
     createTicket: (req, res) => {
         // Mapear nombres de parámetros que vienen desde el frontend
-        const { usuarioId, edificioId, servicioId, area, problematica } = req.body;
+        const { usuarioId, servicioId, area, problematica } = req.body;
         
         // Validar datos
-        if (!usuarioId || !edificioId || !servicioId || !area || !problematica) {
+        if (!usuarioId || !servicioId || !area || !problematica) {
             return res.status(400).json({ error: 'Faltan datos requeridos' });
         }
         
         const newTicket = {
             idUsuario: usuarioId,
-            idEdificio: edificioId,
             idServicio: servicioId,
             area: area,
             problematica: problematica
@@ -81,10 +80,9 @@ const ticketController = {
     // Actualizar un ticket 
     updateTicket: (req, res) => {
         const { id } = req.params;
-        const { idEdificio, idServicio, area, problematica, estado } = req.body;
+        const { idServicio, area, problematica, estado } = req.body;
         
         const ticketUpdate = { 
-            idEdificio: idEdificio,
             idServicio: idServicio, 
             area: area, 
             problematica: problematica, 

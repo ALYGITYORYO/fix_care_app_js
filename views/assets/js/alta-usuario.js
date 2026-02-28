@@ -20,6 +20,37 @@ $(document).ready(function() {
         }
     }
 
+    // Cargar organizaciones para el formulario
+    async function cargarOrganizaciones() {
+        try {
+            const respuesta = await fetch('/api/organizaciones');
+            const orgs = await respuesta.json();
+            const select = document.getElementById('organizacion');
+            select.innerHTML = '<option value="">Seleccione...</option>';
+            orgs.forEach(o => {
+                const opt = document.createElement('option');
+                opt.value = o.id;
+                opt.textContent = o.nombre;
+                select.appendChild(opt);
+            });
+
+            const selectEdit = document.getElementById('editar_organizacion');
+            if (selectEdit) {
+                selectEdit.innerHTML = '<option value="">Seleccione...</option>';
+                orgs.forEach(o => {
+                    const opt = document.createElement('option');
+                    opt.value = o.id;
+                    opt.textContent = o.nombre;
+                    selectEdit.appendChild(opt);
+                });
+            }
+
+            console.log('✅ Organizaciones cargadas');
+        } catch (err) {
+            console.error('❌ Error cargando organizaciones', err);
+        }
+    }
+
     // Función para crear el grid con los usuarios
     function crearGridUsuarios(usuarios) {
     if ($("#grid").data("kendoGrid")) {
@@ -352,6 +383,7 @@ $(document).ready(function() {
         $('#editar_correo').val(usuario.correo || '');
         $('#editar_celular').val(usuario.cel || '');
         $('#editar_rol').val(usuario.rol || 'usuario');
+        $('#editar_organizacion').val(usuario.id_organizacion || '');
 
         // Manejar contraseñas
         $('#toggleCambiarClave').prop('checked', false);
@@ -946,17 +978,113 @@ $(document).ready(function() {
     listboxDisponible.bind("dragend", actualizarCampoMenu);
     listboxAsignado.bind("dragend", actualizarCampoMenu);
 
-    // Función para validar formulario (usada por el botón del modal footer)
-    function validarFormulario() {
-        var form = $('.FormularioAjax')[0];
-        form.dispatchEvent(new Event('submit'));
+    // Función para validar y enviar formulario de creación
+    function validarFormularioCrear() {
+        const form = document.getElementById('formCrearUsuario');
+        if (!form.checkValidity()) {
+            form.classList.add('was-validated');
+            return;
+        }
+        enviarNuevoUsuario();
+    }
+
+    // Función para validar y enviar formulario de edición
+    function validarFormularioEditar() {
+        const form = document.getElementById('formEditarUsuario');
+        if (!form.checkValidity()) {
+            form.classList.add('was-validated');
+            return;
+        }
+        enviarActualizacionUsuario();
     }
 
     // Inicializar contador de menús
     actualizarCampoMenu();
 
+    // añadir listeners para los formularios de usuario
+    document.getElementById('formCrearUsuario').addEventListener('submit', function(e) {
+        e.preventDefault();
+        validarFormularioCrear();
+    });
+    document.getElementById('formEditarUsuario').addEventListener('submit', function(e) {
+        e.preventDefault();
+        validarFormularioEditar();
+    });
+
+    // cargar organizaciones al preparar el modal
+    cargarOrganizaciones();
 });
-            
+
+// funciones para enviar datos al API
+async function enviarNuevoUsuario() {
+    const data = {
+        usuario_nombre: document.getElementById('nombre').value,
+        apepat: document.getElementById('apellido1').value,
+        usuario_apemat: document.getElementById('apellido2').value,
+        usuario_email: document.getElementById('correo').value,
+        usuario_cel: document.getElementById('celular').value,
+        usuario_usuario: document.getElementById('usuario').value,
+        usuario_clave_1: document.getElementById('clave1').value,
+        usuario_rol: document.getElementById('rol').value,
+        usuario_menu: document.getElementById('usuario_menu').value,
+        usuario_organizacion: document.getElementById('organizacion').value,
+        usuario_foto: document.getElementById('fotoPerfil')?.value || ''
+    };
+    try {
+        const resp = await fetch('/api/usuarios', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        if (resp.ok) {
+            alert('Usuario creado correctamente');
+            $('#altaUsuarios').modal('hide');
+            cargarUsuarios();
+            document.getElementById('formCrearUsuario').reset();
+        } else {
+            const err = await resp.json();
+            alert('Error: ' + (err.error || '')); 
+        }
+    } catch (e) {
+        console.error(e);
+        alert('Error creando usuario');
+    }
+}
+
+async function enviarActualizacionUsuario() {
+    const id = document.getElementById('editar_id').value;
+    const data = {
+        usuario_nombre: document.getElementById('editar_nombre').value,
+        apepat: document.getElementById('editar_apepat').value,
+        usuario_apemat: document.getElementById('editar_apemat').value,
+        usuario_email: document.getElementById('editar_correo').value,
+        usuario_cel: document.getElementById('editar_celular').value,
+        usuario_rol: document.getElementById('editar_rol').value,
+        usuario_menu: document.getElementById('usuario_menu_editar').value,
+        usuario_organizacion: document.getElementById('editar_organizacion').value,
+        usuario_foto: document.getElementById('editar_fotoPerfil')?.value || ''
+    };
+    const clave = document.getElementById('editar_clave1').value;
+    if (clave) data.usuario_clave_1 = clave;
+    try {
+        const resp = await fetch('/api/usuarios/' + id, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        if (resp.ok) {
+            alert('Usuario actualizado');
+            $('#editarUsuarios').modal('hide');
+            cargarUsuarios();
+        } else {
+            const err = await resp.json();
+            alert('Error: ' + (err.error || ''));
+        }
+    } catch (e) {
+        console.error(e);
+        alert('Error actualizando usuario');
+    }
+}
 
 $(document).ready(function() {
     // Datos de menús disponibles (mismos que en el modal de alta)
