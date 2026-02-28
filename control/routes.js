@@ -41,23 +41,24 @@ router.put('/api/tickets/:id', ticketController.updateTicket);
 router.get('/estadisticas', ticketController.getEstadisticas);
 // ============ FIN API TICKETS ==============
 
-// ============ ENDPOINTS ADICIONALES PARA ALTA-TICKET ============
-// Obtener edificios (datos de ejemplo o desde BD)
-router.get('/api/edificios', (req, res) => {
-    res.json([
-        { id: 1, nombre: 'Edificio A' },
-        { id: 2, nombre: 'Edificio B' },
-        { id: 3, nombre: 'Edificio C' }
-    ]);
-});
+// ============ ENDPOINTS DE REFERENCIAS ============
+// Servicios (desde BD)
+const servicioController = require('./servicioController');
+router.get('/api/servicios', servicioController.getServicios);
 
-// Obtener servicios (datos de ejemplo o desde BD)
-router.get('/api/servicios', (req, res) => {
-    res.json([
-        { id: 1, nombre: 'Mantenimiento' },
-        { id: 2, nombre: 'Reparación' },
-        { id: 3, nombre: 'Limpieza' }
-    ]);
-});
+// Organizaciones (CRUD)
+const organizacionController = require('./organizacionController');
+router.get('/api/organizaciones', organizacionController.getOrganizaciones);
+router.get('/api/organizaciones/:id', organizacionController.getOrganizacion);
+router.post('/api/organizaciones', organizacionController.createOrganizacion);
+router.put('/api/organizaciones/:id', organizacionController.updateOrganizacion);
+router.delete('/api/organizaciones/:id', organizacionController.deleteOrganizacion);
+
+// RELACIONES entre usuarios y organizaciones
+const relacionController = require('./relacionController');
+router.post('/api/vincular/encargado', relacionController.vincularEncargado);
+router.post('/api/vincular/tecnico', relacionController.vincularTecnico);
+
+// ============ FIN ENDPOINTS REFERENCIAS ==============
 
 module.exports = router;

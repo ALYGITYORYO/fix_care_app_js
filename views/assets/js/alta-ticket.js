@@ -7,8 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Cargar usuarios
     cargarUsuarios();
     
-    // Cargar edificios
-    cargarEdificios();
+    // ya no se cargan edificios (tabla eliminada del esquema)
     
     // Cargar servicios
     cargarServicios();
@@ -45,27 +44,8 @@ async function cargarUsuarios() {
     }
 }
 
-// Cargar edificios en el select
-async function cargarEdificios() {
-    try {
-        const response = await fetch('/api/edificios');
-        const edificios = await response.json();
-        
-        const select = document.getElementById('inputEdificio');
-        select.innerHTML = '<option value="">Seleccionar edificio...</option>';
-        
-        edificios.forEach(edificio => {
-            const option = document.createElement('option');
-            option.value = edificio.id;
-            option.textContent = edificio.nombre;
-            select.appendChild(option);
-        });
-        
-        console.log('✅ Edificios cargados');
-    } catch (error) {
-        console.error('❌ Error cargando edificios:', error);
-    }
-}
+// no se usa la función de edificios ya que el esquema no las contiene
+
 
 // Cargar servicios en el select
 async function cargarServicios() {
@@ -96,9 +76,7 @@ async function crearTicket() {
     
     const datos = {
         usuarioId: document.getElementById('inputUsuario').value,
-        edificioId: document.getElementById('inputEdificio').value,
-        servicioId: document.getElementById('inputServicio').value,
-        area: document.getElementById('inputArea').value,
+
         problematica: document.getElementById('inputProblematica').value
     };
     
@@ -161,8 +139,7 @@ async function cargarTickets() {
                                     <strong>#${ticket.idTicket}</strong> - ${ticket.tipo_servicio || 'Sin tipo'}
                                 </h6>
                                 <p class="mb-1 small text-muted">
-                                    Solicitante: <strong>${ticket.usuario_solicitante || 'N/A'}</strong> | 
-                                    Edificio: <strong>${ticket.edificio || 'N/A'}</strong>
+                                    Solicitante: <strong>${ticket.usuario_solicitante || 'N/A'}</strong>
                                 </p>
                                 <p class="mb-0 small">${ticket.descripcion_problema || 'Sin descripción'}</p>
                             </div>

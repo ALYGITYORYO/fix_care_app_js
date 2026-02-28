@@ -229,7 +229,7 @@
                                         <label for="apellido" class="form-label">
                                             <i class="fas fa-user me-1"></i>Apellidos <span class="text-danger">*</span>
                                         </label>
-                                        <input type="text" class="form-control" id="apellido" name="apepat"
+                                        <input type="text" class="form-control" id="apellido1" name="apepat"
                                             pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}" maxlength="40" required
                                             placeholder="Ingrese sus apellidos">
                                         <div class="valid-feedback">¡Correcto!</div>
@@ -242,7 +242,7 @@
                                         <label for="apellido" class="form-label">
                                             <i class="fas fa-user me-1"></i>Apellidos <span class="text-danger">*</span>
                                         </label>
-                                        <input type="text" class="form-control" id="apellido" name="apemat"
+                                        <input type="text" class="form-control" id="apellido2" name="apemat"
                                             pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}" maxlength="40" required
                                             placeholder="Ingrese sus apellidos">
                                         <div class="valid-feedback">¡Correcto!</div>
@@ -335,6 +335,14 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
+                                        <label for="organizacion" class="form-label">
+                                            <i class="fas fa-building me-1"></i>Organización
+                                        </label>
+                                        <select id="organizacion" class="form-select" name="usuario_organizacion">
+                                            <option value="">Cargando organizaciones...</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
                                         <label for="rol" class="form-label">
                                             <i class="fas fa-user-tag me-1"></i>Rol <span class="text-danger">*</span>
                                         </label>
@@ -424,6 +432,7 @@
 
                                 <!-- Campo oculto para menú seleccionado -->
                                 <input type="hidden" name="usuario_menu" id="usuario_menu">
+                                <input type="hidden" name="usuario_organizacion" id="usuario_organizacion_hidden">
 
                         </div>
                         <div class="modal-footer">
@@ -693,6 +702,7 @@
 
                                 <!-- Campo oculto para menú seleccionado -->
                                 <input type="hidden" name="usuario_menu" id="usuario_menu_editar">
+                                <input type="hidden" name="usuario_organizacion" id="usuario_organizacion_editar_hidden">
 
                         </div>
                         <div class="modal-footer">
