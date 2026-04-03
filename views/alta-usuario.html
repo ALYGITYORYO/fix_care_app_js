@@ -197,8 +197,8 @@
                                 aria-label="Cerrar"></button>
                         </div>
                         <div class="modal-body">
-                            <form class="FormularioAjax needs-validation"
-                                action="app/ajax/usuarioAjax.php" method="POST"
+                            <form id="formCrearUsuario" class="FormularioAjax needs-validation"
+                                action="/api/usuarios" method="POST"
                                 enctype="multipart/form-data" novalidate>
 
                                 <input type="hidden" name="modulo_usuario" value="registrar">
@@ -466,8 +466,8 @@
                                 aria-label="Cerrar"></button>
                         </div>
                         <div class="modal-body">
-                            <form class="FormularioAjax needs-validation"
-                                action="app/ajax/usuarioAjax.php" method="POST"
+                            <form id="formEditarUsuario" class="FormularioAjax needs-validation"
+                                action="/api/usuarios" method="POST"
                                 enctype="multipart/form-data" novalidate>
 
                                 <input type="hidden" name="modulo_usuario" value="actualizar">

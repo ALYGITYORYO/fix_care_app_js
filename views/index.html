@@ -70,11 +70,146 @@
 
     <!-- Script específico de esta página -->
     <script>
-        // Cargar datos específicos del dashboard
-        fetch('/api/stats')
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/login.html';
+                return;
+            }
+
+            fetch('/api/verify', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.success) {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    window.location.href = '/login.html';
+                    return;
+                }
+
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                const userNameElement = document.getElementById('user-name');
+                const userRoleElement = document.getElementById('user-role');
+                if (userNameElement) userNameElement.textContent = user.nombre || 'Usuario';
+                if (userRoleElement) userRoleElement.textContent = user.rol || 'Usuario';
+
+                setupLogout();
+                loadStats(token);
+            })
+            .catch(error => {
+                console.error('Error verificando autenticación:', error);
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = '/login.html';
+            });
+        });
+
+        function setupLogout() {
+            const logoutBtn = document.querySelector('.logout-btn, [data-action="logout"], .btn-logout');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    logout();
+                });
+            }
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('logout') || e.target.closest('.logout')) {
+                    e.preventDefault();
+                    logout();
+                }
+            });
+        }
+
+        function logout() {
+            // Función para eliminar cookie
+            function deleteCookie(name) {
+                document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            }
+
+            fetch('/api/logout', { method: 'POST' })
+            .then(() => {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                deleteCookie('auth_token');
+                window.location.href = '/login.html';
+            })
+            .catch(() => {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                deleteCookie('auth_token');
+                window.location.href = '/login.html';
+            });
+        }
+
+        function loadStats(token) {
+            fetch('/api/stats', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
             .then(response => response.json())
             .then(data => {
                 document.getElementById('total-usuarios').textContent = data.usuarios || 0;
+            })
+            .catch(error => {
+                console.error('Error cargando stats:', error);
+            });
+        }
+    </script>
+                });
+            }
+
+            // También agregar listener a cualquier elemento con clase logout
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('logout') || e.target.closest('.logout')) {
+                    e.preventDefault();
+                    logout();
+                }
+            });
+        }
+
+        function logout() {
+            // Función para eliminar cookie
+            function deleteCookie(name) {
+                document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            }
+
+            fetch('/api/logout', {
+                method: 'POST'
+            })
+            .then(() => {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                deleteCookie('auth_token');
+                window.location.href = '/login.html';
+            })
+            .catch(error => {
+                console.error('Error en logout:', error);
+                // De todas formas limpiar localStorage y cookie
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                deleteCookie('auth_token');
+                window.location.href = '/login.html';
+            });
+        }
+
+        // Cargar datos específicos del dashboard
+        fetch('/api/stats', {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('total-usuarios').textContent = data.usuarios || 0;
+            })
+            .catch(error => {
+                console.error('Error cargando stats:', error);
             });
     </script>
 </body>

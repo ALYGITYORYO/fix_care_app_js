@@ -36,15 +36,15 @@ const UsuarioModel = {
         const values = [
             usuario.nombre,
             usuario.apepat,
-            usuario.apemat || null,
+            usuario.apemat || '',
             usuario.correo,
-            usuario.cel || null,
+            usuario.cel || '',
             usuario.user,
             hash,
-            usuario.rol,
-            usuario.menu || null,
-            usuario.img || null,
-            usuario.id_organizacion || null
+            usuario.rol || 'usuario',
+            usuario.menu || '[]',
+            usuario.img || '',
+            usuario.id_organizacion != null ? usuario.id_organizacion : 0
         ];
         
         conexion.query(query, values, callback);
@@ -101,6 +101,14 @@ const UsuarioModel = {
     verifyUser: (user, callback) => {
         const query = 'SELECT * FROM usuario WHERE user = ? OR correo = ?';
         conexion.query(query, [user, user], callback);
+    },
+
+    // Actualizar solo contraseña (hash)
+    updatePassword: (id, password, callback) => {
+        const salt = bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync(password, salt);
+        const query = 'UPDATE usuario SET password = ?, usuario_actualizado = NOW() WHERE id = ?';
+        conexion.query(query, [hash, id], callback);
     }
 };
 

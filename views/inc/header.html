@@ -40,10 +40,25 @@
                 role="button" data-bs-toggle="dropdown">
                 <img src="assets/images/user2.png" class="rounded-2 img-3x" alt="Fix Care" />
                 <div class="ms-2 text-truncate d-lg-block d-none text-white">
-                    <span class="d-flex opacity-50 small">Admin</span>
-                    <span>Taylor Franklin</span>
+                    <span class="d-flex opacity-50 small" id="user-role">Admin</span>
+                    <span id="user-name">Usuario</span>
                 </div>
             </a>
+            <div class="dropdown-menu dropdown-menu-end shadow">
+                <a class="dropdown-item" href="#!">
+                    <i class="bi bi-person fs-6 lh-1 me-2"></i>
+                    Perfil
+                </a>
+                <a class="dropdown-item" href="#!">
+                    <i class="bi bi-gear fs-6 lh-1 me-2"></i>
+                    Configuración
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item logout" href="#!">
+                    <i class="bi bi-box-arrow-right fs-6 lh-1 me-2"></i>
+                    Cerrar Sesión
+                </a>
+            </div>
         </div>
     </div>
     <!-- App header actions end -->

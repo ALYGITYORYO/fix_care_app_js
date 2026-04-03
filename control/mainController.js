@@ -15,7 +15,7 @@ const mainController = {
     },
     // Método para probar que el controlador funciona, en construccion ajskajska
     getDashboard: (req, res) => {
-        res.send('Dashboard - Aquí irá el contenido principal');
+        res.sendFile(path.join(__dirname, '../views/index.html'));
     },
 
     // Método para obtener datos (ejemplo)
@@ -24,6 +24,18 @@ const mainController = {
             mensaje: 'Controlador funcionando correctamente',
             estado: 'conectado',
             fecha: new Date()
+        });
+    },
+
+    // Método para obtener estadísticas del dashboard
+    getStats: (req, res) => {
+        // Aquí puedes agregar consultas para obtener estadísticas reales
+        // Por ahora devolvemos datos de ejemplo
+        res.json({
+            usuarios: 0, // Total de usuarios
+            tickets: 0,  // Total de tickets
+            organizaciones: 0, // Total de organizaciones
+            tickets_abiertos: 0 // Tickets abiertos
         });
     }
 };

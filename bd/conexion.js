@@ -3,6 +3,7 @@ const mysql = require('mysql2'); // Importar mysql2 para conexión a MySQL
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
+    port: 3306,
     password: '',
     database: 'fix_care'
 });

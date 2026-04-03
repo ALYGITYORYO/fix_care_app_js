@@ -128,4 +128,4 @@ const ticketController = {
     uploadTicketImage: upload.single('imagen') // Middleware para subir imagen
 };
 
-module.exports = ticketController;module.exports = ticketController;
+module.exports = ticketController;
