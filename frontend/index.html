@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Fix Care | Gestión Inteligente de Tickets</title>
+  <!-- Bootstrap 5 + Icons + Google Fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <!-- AOS Library (efectos scroll) -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f4f9ff;
+      color: #1a2c3e;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* Paleta de colores inspirada: azules modernos + acentos naranja/teal */
+    :root {
+      --primary-dark: #0B2B40;
+      --primary: #1C6E8F;
+      --primary-light: #3A9BC9;
+      --accent: #F18F01;
+      --accent-hover: #e07e00;
+      --light-bg: #EFF7FC;
+      --card-bg: #ffffff;
+      --shadow-sm: 0 20px 30px -15px rgba(0, 32, 64, 0.08);
+      --shadow-hover: 0 25px 35px -12px rgba(0, 0, 0, 0.12);
+      --transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    /* Transiciones y efectos */
+    section, .card, .navbar, .hero-badge {
+      transition: var(--transition);
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .btn-custom {
+      background: var(--primary);
+      color: white;
+      border-radius: 60px;
+      padding: 12px 32px;
+      font-weight: 600;
+      transition: var(--transition);
+      border: none;
+      box-shadow: 0 4px 12px rgba(28,110,143,0.25);
+    }
+
+    .btn-custom:hover {
+      background: var(--primary-dark);
+      transform: scale(1.02);
+      color: white;
+      box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+    }
+
+    .btn-outline-accent {
+      border: 2px solid var(--accent);
+      background: transparent;
+      color: var(--accent);
+      border-radius: 60px;
+      padding: 10px 28px;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .btn-outline-accent:hover {
+      background: var(--accent);
+      color: white;
+      transform: translateY(-3px);
+    }
+
+    .navbar {
+      backdrop-filter: blur(12px);
+      background: rgba(255,255,255,0.92);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+      padding: 0.8rem 0;
+    }
+
+    .navbar-brand {
+      font-weight: 800;
+      font-size: 1.8rem;
+      color: var(--primary-dark);
+    }
+
+    .navbar-brand span {
+      color: var(--accent);
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #eef6fc 0%, #d9eaf3 100%);
+      padding: 5rem 0 6rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "⚙️";
+      font-size: 280px;
+      opacity: 0.05;
+      position: absolute;
+      bottom: -40px;
+      right: -40px;
+      transform: rotate(15deg);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      background: rgba(241,143,1,0.15);
+      display: inline-block;
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      backdrop-filter: blur(4px);
+    }
+
+    .section-title {
+      font-weight: 800;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(125deg, var(--primary-dark), var(--primary-light));
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .feature-icon {
+      background: rgba(28,110,143,0.12);
+      width: 70px;
+      height: 70px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      transition: var(--transition);
+    }
+
+    .feature-icon i {
+      font-size: 2.2rem;
+      color: var(--primary);
+    }
+
+    .card-feature {
+      border: none;
+      border-radius: 32px;
+      background: var(--card-bg);
+      padding: 1.5rem 1.2rem;
+      height: 100%;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .tech-stack {
+      background: white;
+      border-radius: 48px;
+      padding: 2rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .requirement-item {
+      border-left: 4px solid var(--primary-light);
+      background: white;
+      padding: 1rem 1.5rem;
+      border-radius: 24px;
+      margin-bottom: 1.2rem;
+      transition: all 0.2s ease;
+    }
+
+    .footer {
+      background: #0B2B40;
+      color: #cbdde6;
+    }
+
+    /* efecto hover en íconos */
+    .icon-rotate i {
+      transition: transform 0.3s;
+    }
+
+    .icon-rotate:hover i {
+      transform: scale(1.1) rotate(3deg);
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        padding: 3rem 0 4rem;
+        text-align: center;
+      }
+      .section-title {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR (transparente con efecto glass) -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Fix<span>Care</span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto gap-3">
+          <li class="nav-item"><a class="nav-link fw-semibold" href="#inicio">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="#solucion">Solución</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="#ventajas">Ventajas</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold" href="#requerimientos">Tecnología</a></li>
+          <li class="nav-item"><a class="btn btn-custom py-2 px-4 ms-2" href="login.html">Ingresar</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="inicio" class="hero" style="padding-top: 120px;">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6" data-aos="fade-right" data-aos-duration="800">
+          <div class="hero-badge">
+            <i class="fas fa-ticket-alt me-2"></i> Sistema universitario inteligente
+          </div>
+          <h1 class="display-4 fw-bold mb-3" style="color: #0B2B40;">Gestión de tickets <span style="color: #F18F01;">transparente</span> y eficiente</h1>
+          <p class="lead mb-4 text-secondary">Fix.Care transforma la experiencia de reporte de fallas: seguimiento en tiempo real, comunicación clara y total trazabilidad. Olvida la incertidumbre.</p>
+          <div class="d-flex flex-wrap gap-3">
+            <a href="login.html" class="btn btn-custom btn-lg"><i class="fas fa-rocket me-2"></i>Ingresar</a>
+            <a href="#solucion" class="btn btn-outline-accent btn-lg"><i class="fas fa-chart-line me-2"></i>Conocer más</a>
+          </div>
+          <div class="mt-4 d-flex gap-4">
+            <div><i class="fas fa-check-circle text-primary me-1"></i> <small>Sin barreras</small></div>
+            <div><i class="fas fa-clock text-primary me-1"></i> <small>Seguimiento 24/7</small></div>
+            <div><i class="fas fa-shield-alt text-primary me-1"></i> <small>Roles y seguridad</small></div>
+          </div>
+        </div>
+        <div class="col-lg-6 text-center" data-aos="fade-left" data-aos-duration="900">
+          <img src="/img/dashboard_de_tickets.png" alt="Fix Care ilustración" class="img-fluid rounded-4 shadow-lg" style="max-width: 90%; border-radius: 2rem;">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEMÁTICA + ANTECEDENTES (resumen) -->
+  <section class="py-5 bg-white">
+    <div class="container">
+      <div class="row g-4 align-items-center">
+        <div class="col-md-6" data-aos="fade-up">
+          <span class="text-uppercase text-primary fw-semibold"><i class="fas fa-chart-simple me-1"></i> Diagnóstico</span>
+          <h2 class="section-title mt-2">Antecedentes & problemática</h2>
+          <p class="fs-5">En la universidad se identificó la <strong>ausencia de un sistema eficiente</strong> para el seguimiento de reportes de fallas. Los usuarios no tenían visibilidad del estado de sus solicitudes, generando incertidumbre y demoras.</p>
+          <div class="bg-light p-4 rounded-4 mt-3">
+            <i class="fas fa-exclamation-triangle text-accent fs-2 mb-2" style="color: #F18F01;"></i>
+            <p class="mb-0 fw-semibold">❌ Falta de comunicación transparente<br>❌ Impacto directo en la experiencia del usuario<br>❌ Baja eficiencia operativa</p>
+          </div>
+        </div>
+        <div class="col-md-6" data-aos="fade-up" data-aos-delay="150">
+          <img src="https://placehold.co/550x400/EFF7FC/1C6E8F?text=Reportes+sin+seguimiento&font=montserrat" class="img-fluid rounded-4 shadow-sm" alt="problematica">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOLUCIÓN + OBJETIVOS ESPECÍFICOS -->
+  <section id="solucion" class="py-5" style="background: #EFF7FC;">
+    <div class="container">
+      <div class="text-center mb-5" data-aos="zoom-in">
+        <h2 class="section-title">Solución integral: Fix.Care</h2>
+        <p class="lead w-75 mx-auto">Optimizamos y transparentamos el proceso de atención a reportes con tecnología de punta y diseño centrado en las personas.</p>
+      </div>
+      <div class="row g-5">
+        <div class="col-lg-6" data-aos="fade-right">
+          <div class="tech-stack h-100 d-flex flex-column justify-content-center">
+            <i class="fas fa-lightbulb fa-3x mb-3" style="color: var(--accent);"></i>
+            <h3 class="fw-bold">¿Qué es Fix.Care?</h3>
+            <p>Sistema de gestión de tickets diseñado para universidades y empresas, que permite reportar incidencias, asignar tareas al personal técnico y hacer un seguimiento detallado con actualizaciones en tiempo real.</p>
+            <ul class="list-unstyled mt-3">
+              <li><i class="fas fa-check-circle text-primary me-2"></i> Registro manual y automático de incidencias</li>
+              <li><i class="fas fa-check-circle text-primary me-2"></i> Asignación eficiente de tareas</li>
+              <li><i class="fas fa-check-circle text-primary me-2"></i> Control de acceso por roles (admin, técnico, usuario)</li>
+              <li><i class="fas fa-check-circle text-primary me-2"></i> Mantenimiento preventivo y correctivo</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-6" data-aos="fade-left">
+          <div class="bg-white p-4 rounded-4 shadow-sm">
+            <h3 class="fw-bold mb-4"><i class="fas fa-bullseye me-2 text-primary"></i> Objetivos específicos</h3>
+            <div class="row g-3">
+              <div class="col-sm-6">
+                <div class="p-3 border rounded-3 h-100 bg-light">
+                  <i class="fas fa-shield-alt fa-2x text-primary mb-2"></i>
+                  <h5>Seguridad y control</h5>
+                  <p class="small">Acceso basado en roles, autenticación robusta.</p>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="p-3 border rounded-3 h-100 bg-light">
+                  <i class="fas fa-smile fa-2x text-primary mb-2"></i>
+                  <h5>Facilidad de uso</h5>
+                  <p class="small">UI intuitiva, multi-plataforma.</p>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="p-3 border rounded-3 h-100 bg-light">
+                  <i class="fas fa-chart-line fa-2x text-primary mb-2"></i>
+                  <h5>Seguimiento en tiempo real</h5>
+                  <p class="small">Actualizaciones automáticas y estado del ticket.</p>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="p-3 border rounded-3 h-100 bg-light">
+                  <i class="fas fa-file-alt fa-2x text-primary mb-2"></i>
+                  <h5>Informes y análisis</h5>
+                  <p class="small">Métricas de eficiencia, históricos y trazabilidad.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VENTAJAS (cards con íconos) -->
+  <section id="ventajas" class="py-5">
+    <div class="container">
+      <div class="text-center mb-5" data-aos="fade-up">
+        <span class="badge bg-warning text-dark px-4 py-2 rounded-pill"><i class="fas fa-gem me-1"></i> Valor diferencial</span>
+        <h2 class="section-title mt-3">Ventajas de usar Fix.Care</h2>
+        <p>La transparencia y la organización redefinen la gestión de incidencias</p>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+          <div class="card-feature text-center">
+            <div class="feature-icon mx-auto"><i class="fas fa-eye"></i></div>
+            <h4 class="fw-bold">Transparencia total</h4>
+            <p>Estado claro de cada solicitud, historial visible para el usuario y el equipo técnico.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+          <div class="card-feature text-center">
+            <div class="feature-icon mx-auto"><i class="fas fa-folder-tree"></i></div>
+            <h4 class="fw-bold">Mejor organización</h4>
+            <p>Categorización, etiquetas y priorización de tickets para flujos más ágiles.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
+          <div class="card-feature text-center">
+            <div class="feature-icon mx-auto"><i class="fas fa-history"></i></div>
+            <h4 class="fw-bold">Historial y trazabilidad</h4>
+            <p>Registro completo de cada acción, desde el reporte hasta la resolución final.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="400">
+          <div class="card-feature text-center">
+            <div class="feature-icon mx-auto"><i class="fas fa-charging-station"></i></div>
+            <h4 class="fw-bold">Mayor eficiencia operativa</h4>
+            <p>Reducción de tiempos de respuesta y asignación automática inteligente.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="500">
+          <div class="card-feature text-center">
+            <div class="feature-icon mx-auto"><i class="fas fa-comments"></i></div>
+            <h4 class="fw-bold">Mejora en la comunicación</h4>
+            <p>Notificaciones, comentarios internos y feedback con el usuario final.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="600">
+          <div class="card-feature text-center">
+            <div class="feature-icon mx-auto"><i class="fas fa-chart-simple"></i></div>
+            <h4 class="fw-bold">Análisis de datos</h4>
+            <p>Dashboards y reportes para la toma de decisiones estratégicas.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STACK TECNOLÓGICO + REQUERIMIENTOS FUNCIONALES Y NO FUNCIONALES -->
+  <section id="requerimientos" class="py-5 bg-light">
+    <div class="container">
+      <div class="row g-5">
+        <div class="col-md-5" data-aos="fade-right">
+          <h2 class="section-title">Stack Tecnológico</h2>
+          <div class="tech-stack mt-3">
+            <div class="d-flex flex-wrap gap-3 justify-content-start mb-4">
+              <span class="badge bg-primary bg-opacity-10 text-primary p-3 rounded-4"><i class="fab fa-react fa-2x"></i> React</span>
+              <span class="badge bg-secondary bg-opacity-10 text-dark p-3 rounded-4"><i class="fab fa-node-js fa-2x"></i> Node.js</span>
+              <span class="badge bg-info bg-opacity-10 text-info p-3 rounded-4"><i class="fas fa-database fa-2x"></i> PostgreSQL</span>
+            </div>
+            <ul class="list-group list-group-flush bg-transparent">
+              <li class="list-group-item bg-transparent border-0 ps-0"><i class="fab fa-bootstrap me-2 text-primary"></i> Bootstrap 5 + responsive design</li>
+              <li class="list-group-item bg-transparent border-0 ps-0"><i class="fas fa-chart-line me-2 text-primary"></i> FontAwesome / Iconografía vectorial</li>
+              <li class="list-group-item bg-transparent border-0 ps-0"><i class="fab fa-google me-2 text-primary"></i> Google Fonts (Inter)</li>
+              <li class="list-group-item bg-transparent border-0 ps-0"><i class="fas fa-shield-alt me-2 text-primary"></i> JWT, roles, seguridad integrada</li>
+              <li class="list-group-item bg-transparent border-0 ps-0"><i class="fas fa-mobile-alt me-2 text-primary"></i> Multiplataforma (Web, móvil responsive)</li>
+            </ul>
+            <div class="mt-4 pt-2">
+              <i class="fas fa-crown text-warning"></i> <strong>Frontend:</strong> React + Bootstrap | <strong>Backend:</strong> Node.js + Express
+            </div>
+          </div>
+        </div>
+        <div class="col-md-7" data-aos="fade-left">
+          <div class="mb-4">
+            <h3 class="fw-bold"><i class="fas fa-list-check me-2" style="color: var(--accent);"></i> Requerimientos funcionales</h3>
+            <div class="requirement-item">
+              <i class="fas fa-check-circle text-primary me-2"></i> Sistema virtual de tickets para reportar y gestionar solicitudes de mantenimiento.
+            </div>
+            <div class="requirement-item">
+              <i class="fas fa-check-circle text-primary me-2"></i> Registro manual de incidencias y seguimiento detallado.
+            </div>
+            <div class="requirement-item">
+              <i class="fas fa-check-circle text-primary me-2"></i> Asignación eficiente de tareas al personal técnico (basado en disponibilidad).
+            </div>
+            <div class="requirement-item">
+              <i class="fas fa-check-circle text-primary me-2"></i> Acceso controlado mediante usuarios y roles definidos (admin, técnico, usuario).
+            </div>
+            <div class="requirement-item">
+              <i class="fas fa-check-circle text-primary me-2"></i> Atención a solicitudes de mantenimiento preventivo y correctivo.
+            </div>
+          </div>
+          <div>
+            <h3 class="fw-bold mt-4"><i class="fas fa-microchip me-2" style="color: var(--accent);"></i> Requerimientos no funcionales</h3>
+            <div class="row g-2 mt-2">
+              <div class="col-sm-6"><div class="bg-white p-3 rounded-3"><i class="fas fa-users"></i> Soporte a múltiples usuarios concurrentes</div></div>
+              <div class="col-sm-6"><div class="bg-white p-3 rounded-3"><i class="fas fa-lock"></i> Seguridad y autenticación robusta</div></div>
+              <div class="col-sm-6"><div class="bg-white p-3 rounded-3"><i class="fas fa-laptop-code"></i> Multiplataforma (escritorio / portátil / tablets)</div></div>
+              <div class="col-sm-6"><div class="bg-white p-3 rounded-3"><i class="fas fa-brain"></i> Sistema intuitivo y fácil de usar</div></div>
+              <div class="col-sm-12"><div class="bg-white p-3 rounded-3"><i class="fas fa-charging-station"></i> Compatibilidad total con navegadores modernos y rendimiento óptimo</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXTRAS: BIBLIOTECAS Y MENCIÓN A AI complementa enseñanza -->
+  <section class="py-4" style="background: white;">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-8" data-aos="flip-up">
+          <div class="p-4 rounded-4" style="background: linear-gradient(120deg, #F0F9FF, #E2F0F9);">
+            <i class="fas fa-robot fa-3x float-end opacity-25"></i>
+            <h4 class="fw-bold">🧠 Filosofía tecnológica</h4>
+            <p class="mb-0 fs-5">"La inteligencia artificial debe complementar la enseñanza, no reemplazarla por completo". En Fix.Care incorporamos IA predictiva para asignación óptima y análisis, siempre potenciando el factor humano.</p>
+            <div class="mt-3 small text-muted"><i class="fas fa-code-branch"></i> Librerías: PDFMake, FontAwesome, Google Fonts + integración continua.</div>
+          </div>
+        </div>
+        <div class="col-md-4 text-center" data-aos="zoom-in">
+          <img src="https://placehold.co/300x200/1C6E8F/white?text=IA+Complementaria&font=montserrat" class="img-fluid rounded-3 shadow-sm" alt="AI complementa">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMULARIO DE CONTACTO / DEMO -->
+  <section id="contacto" class="py-5" style="background: #E2EEF7;">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8" data-aos="fade-up">
+          <div class="card border-0 rounded-5 shadow-lg overflow-hidden">
+            <div class="card-body p-5">
+              <h3 class="fw-bold text-center mb-1">¿Listo para transformar la gestión de tickets?</h3>
+              <p class="text-center text-secondary mb-4">Solicita una demo o más información sobre Fix.Care</p>
+              <form>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label">Nombre completo</label>
+                    <input type="text" class="form-control form-control-lg rounded-4" placeholder="ej. Ana Gómez">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Correo institucional</label>
+                    <input type="email" class="form-control form-control-lg rounded-4" placeholder="nombre@universidad.edu">
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label">Mensaje / Consulta</label>
+                    <textarea rows="3" class="form-control rounded-4" placeholder="Cuéntanos sobre tu necesidad de sistema de tickets..."></textarea>
+                  </div>
+                  <div class="col-12 text-center mt-3">
+                    <button type="button" class="btn btn-custom btn-lg px-5 rounded-pill"><i class="fas fa-paper-plane me-2"></i>Enviar mensaje</button>
+                    <p class="small text-muted mt-3">* Recibirás información sobre implementación y precios adaptados.</p>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer pt-5 pb-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-5 mb-4">
+          <h3 class="fw-bold text-white">Fix<span class="text-warning">Care</span></h3>
+          <p class="text-light-50">Solución inteligente para la gestión de incidencias, con trazabilidad y eficiencia operativa. Innovación al servicio de la comunidad universitaria.</p>
+          <div class="d-flex gap-3">
+            <a href="#" class="text-white-50"><i class="fab fa-linkedin fa-lg"></i></a>
+            <a href="#" class="text-white-50"><i class="fab fa-github fa-lg"></i></a>
+            <a href="#" class="text-white-50"><i class="fab fa-twitter fa-lg"></i></a>
+          </div>
+        </div>
+        <div class="col-md-3 mb-4">
+          <h5 class="fw-bold text-white">Explora</h5>
+          <ul class="list-unstyled">
+            <li><a href="#inicio" class="text-white-50 text-decoration-none">Inicio</a></li>
+            <li><a href="#solucion" class="text-white-50 text-decoration-none">Solución</a></li>
+            <li><a href="#ventajas" class="text-white-50 text-decoration-none">Ventajas</a></li>
+            <li><a href="#requerimientos" class="text-white-50 text-decoration-none">Stack técnico</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4 mb-4">
+          <h5 class="fw-bold text-white">Contacto</h5>
+          <p class="text-white-50 mb-1"><i class="fas fa-envelope me-2"></i> hola@fixcare.com</p>
+          <p class="text-white-50"><i class="fas fa-phone-alt me-2"></i> +56 2 1234 5678</p>
+          <p class="small text-white-50 mt-2">© 2025 Fix.Care - Gestión de Tickets. Todos los derechos reservados.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts: Bootstrap, AOS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 800,
+      once: true,
+      offset: 100,
+      easing: 'ease-out-cubic'
+    });
+    // Efecto adicional de smooth scroll para los enlaces internos
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        if(targetId === "#") return;
+        const targetElement = document.querySelector(targetId);
+        if(targetElement) {
+          e.preventDefault();
+          targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

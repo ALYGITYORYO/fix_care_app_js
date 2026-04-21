@@ -1,0 +1,204 @@
+/* --- CONFIGURACIÓN GENERAL --- */
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+
+    background:
+        radial-gradient(circle at 20% 50%, rgba(0,209,131,0.12), transparent 40%),
+        linear-gradient(rgba(10, 37, 64, 0.96), rgba(4, 16, 29, 0.96)),
+        linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
+
+    background-size: cover, cover, 40px 40px, 40px 40px;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+/* Contenedor principal */
+.login-wrapper {
+    width: 100%;
+    display: flex;
+    min-height: 100vh;
+}
+
+/* --- SECCIÓN IZQUIERDA --- */
+.info-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Logo fondo animado */
+.logo-bg {
+    position: absolute;
+    top: 50%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 80%;
+
+    background-image: url('../img/logo.png'); /* IMPORTANTE */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+
+    opacity: 0;
+    z-index: 0;
+
+    animation: fadeInLogo 1.5s ease forwards, floatLogo 10s ease-in-out infinite;
+}
+
+/* Animaciones */
+@keyframes fadeInLogo {
+    from {
+        opacity: 0;
+        transform: translate(-60%, -50%);
+    }
+    to {
+        opacity: 0.07;
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes floatLogo {
+    0% { transform: translate(-50%, -50%); }
+    50% { transform: translate(-50%, -55%); }
+    100% { transform: translate(-50%, -50%); }
+}
+
+/* Texto sobre el logo */
+.info-section > * {
+    position: relative;
+    z-index: 1;
+}
+
+.info-section h1 {
+    font-weight: 700;
+    font-size: 3.2rem;
+    line-height: 1.2;
+    letter-spacing: -1px;
+    margin-bottom: 1.5rem;
+}
+
+.info-section p {
+    font-size: 1.1rem;
+    opacity: 0.8;
+    max-width: 500px;
+}
+
+/* Grid módulos */
+.module-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 2rem;
+    max-width: 500px;
+}
+
+.module-tag {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background 0.3s;
+}
+
+.module-tag:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* --- SECCIÓN DERECHA --- */
+.form-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Card SaaS PRO */
+.card-login {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.2);
+
+    width: 100%;
+    max-width: 420px;
+    padding: 2.5rem;
+
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+
+    transition: all 0.3s ease;
+}
+
+.card-login:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 25px 70px rgba(0,0,0,0.3);
+}
+
+.card-login h3 {
+    font-weight: 700;
+    color: #1a1f36;
+    margin-bottom: 0.5rem;
+}
+
+.text-subtitle {
+    color: #697386;
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+}
+
+/* Inputs */
+.form-control {
+    border: 1px solid #e0e6ed;
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    background-color: #f9fafb;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus {
+    background: #fff;
+    border-color: #00d183;
+    box-shadow: 0 0 0 4px rgba(0, 209, 131, 0.1);
+}
+
+/* Botón PRO */
+.btn-login {
+    background: linear-gradient(135deg, #00d183, #00b372);
+    border: none;
+    border-radius: 10px;
+    padding: 0.85rem;
+    font-weight: 600;
+    color: white;
+
+    transition: all 0.25s ease;
+}
+
+.btn-login:hover {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 12px 30px rgba(0, 209, 131, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .info-section { 
+        display: none; 
+    }
+    body { 
+        background: #0a2540; 
+    }
+    .form-section {
+        background: transparent;
+    }
+}

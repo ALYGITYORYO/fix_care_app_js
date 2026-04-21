@@ -1,8 +1,8 @@
 {
-  "name": "fix_care_app_js",
+  "name": "startbootstrap-sb-admin-gh-pages2",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "db.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,10 +11,12 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "express": "^5.2.1",
-    "multer": "^2.0.2",
-    "mysql2": "^3.17.1"
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.1.1",
+    "mysql2": "^3.20.0",
+    "nodemailer": "^8.0.5",
+    "pdfmake": "^0.2.15"
   }
 }
